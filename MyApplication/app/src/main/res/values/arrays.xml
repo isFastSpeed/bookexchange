@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="array_city_options">
+        <item>北京</item>
+        <item>北京</item>
+        <item>北京</item>
+    </string-array>
+    <string-array name="array_university_options">
+        <item>buaa</item>
+        <item>buaa</item>
+    </string-array>
+</resources>

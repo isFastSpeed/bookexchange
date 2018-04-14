@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Layout for the editor -->
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.zhouziyu.myapplication.SellFragment">
+
+    <!-- Overview category -->
+    <LinearLayout
+        android:id="@+id/overview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Label -->
+        <TextView
+            android:text="Overview"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingTop="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:textAppearance="?android:textAppearanceSmall"/>
+
+        <!-- Input fields -->
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:paddingLeft="4dp"
+            android:orientation="vertical">
+
+            <!-- Name field -->
+            <EditText
+                android:id="@+id/edit_book_name"
+                android:hint="书名"
+                style="@style/EditorFieldStyle"/>
+
+            <!-- Author field -->
+            <EditText
+                android:id="@+id/edit_author"
+                android:hint="作者"
+                style="@style/EditorFieldStyle"/>
+
+            <!-- Publisher field -->
+            <EditText
+                android:id="@+id/edit_publish"
+                android:hint="出版社"
+                style="@style/EditorFieldStyle"/>
+
+            <EditText
+                android:id="@+id/edit_price"
+                android:hint="售价"
+                android:inputType="number"
+                style="@style/EditorFieldStyle"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/container_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/overview"
+        android:orientation="horizontal">
+
+        <!-- Label -->
+        <TextView
+            android:text="所在地区"
+            style="@style/CategoryStyle" />
+
+        <!-- Input field -->
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <!-- City & University drop-down spinner -->
+            <Spinner
+                android:id="@+id/spinner_city"
+                android:layout_height="48dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:paddingRight="16dp"
+                android:spinnerMode="dropdown" />
+            <Spinner
+                android:id="@+id/spinner_univercity"
+                android:layout_height="48dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:paddingLeft="16dp"
+                android:spinnerMode="dropdown"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Contact -->
+    <LinearLayout
+        android:id="@+id/container_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/container_area"
+        android:orientation="horizontal">
+
+        <!-- Label -->
+        <TextView
+            android:text="联系方式"
+            style="@style/CategoryStyle" />
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edit_contact"
+                android:hint="怎么联系你呢？"
+                android:layout_weight="1"
+                style="@style/EditorFieldStyle" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <!-- Description -->
+    <LinearLayout
+        android:id="@+id/container_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/container_contact"
+        android:orientation="horizontal">
+
+        <!-- Label -->
+        <TextView
+            android:text="其他描述"
+            style="@style/CategoryStyle" />
+
+        <!-- Input fields -->
+        <RelativeLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:paddingLeft="4dp">
+
+            <EditText
+                android:id="@+id/edit_description"
+                android:hint="还有啥想说"
+                style="@style/EditorFieldStyle" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

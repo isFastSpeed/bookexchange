@@ -16,16 +16,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".sellActivity"
-            android:label="@string/sell"
-            android:parentActivityName=".MainActivity">
 
-        <!-- Parent activity meta-data to support 4.0 and lower -->
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".MainActivity"/>
+        <activity
+            android:name=".EditorActivity"
+            android:label="添加书籍"
+            android:theme="@style/EditorTheme"
+            android:parentActivityName=".MainActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
+
 
         <activity
             android:name=".usersActivity"
@@ -38,10 +40,6 @@
                 android:value=".MainActivity"/>
         </activity>
 
-        <activity
-            android:name=".titleClickListenActivity">
-
-        </activity>
     </application>
 
 </manifest>
