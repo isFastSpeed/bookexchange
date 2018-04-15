@@ -15,6 +15,8 @@
  */
 package com.example.zhouziyu.myapplication;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +28,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.example.zhouziyu.myapplication.data.BookDbHelper;
+import com.example.zhouziyu.myapplication.data.bookContract;
 
 /**
  * Allows user to create a new book or edit an existing one.
@@ -46,6 +52,9 @@ public class EditorActivity extends AppCompatActivity {
 
     private EditText mContactEditText;
 
+    private EditText mDescriptionEditText;
+
+
     private int mCity = 0;
 
     private int mUniversity = 0;
@@ -63,6 +72,8 @@ public class EditorActivity extends AppCompatActivity {
         mCitySpinner = (Spinner) findViewById(R.id.spinner_city);
         mUniversitySpinner = (Spinner) findViewById(R.id.spinner_univercity);
         mContactEditText = (EditText) findViewById(R.id.edit_contact);
+        mDescriptionEditText = (EditText) findViewById(R.id.edit_description);
+
         setupSpinner();
     }
 
@@ -72,14 +83,14 @@ public class EditorActivity extends AppCompatActivity {
     private void setupSpinner() {
         // Create adapter for spinner. The list options are from the String array it will use
         // the spinner will use the default layout
-        ArrayAdapter SpinnerAdapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter SpinnerCityAdapter = ArrayAdapter.createFromResource(this,
                 R.array.array_city_options, android.R.layout.simple_spinner_item);
 
         // Specify dropdown layout style - simple list view with 1 item per line
-        SpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        SpinnerCityAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 
         // City!
-        mCitySpinner.setAdapter(SpinnerAdapter);
+        mCitySpinner.setAdapter(SpinnerCityAdapter);
 
         // Set the integer mSelected to the constant values
         mCitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -88,11 +99,11 @@ public class EditorActivity extends AppCompatActivity {
                 String selection = (String) parent.getItemAtPosition(position);
                 if (!TextUtils.isEmpty(selection)) {
                     if (selection.equals(getString(R.string.city_bj))) {
-                        mCity = 1;
+                        mCity = bookContract.BookEntry.CITY_1;
                     } else if (selection.equals(getString(R.string.city_bj))) {
-                        mCity = 2;
+                        mCity = bookContract.BookEntry.CITY_2;
                     } else {
-                        mCity = 0;
+                        mCity = bookContract.BookEntry.CITY_UNKNOW;
                     }
                 }
             }
@@ -104,8 +115,13 @@ public class EditorActivity extends AppCompatActivity {
             }
         });
 
+        ArrayAdapter SpinnerUniversityAdapter = ArrayAdapter.createFromResource(this,
+                R.array.array_university_options, android.R.layout.simple_spinner_item);
+
+        // Specify dropdown layout style - simple list view with 1 item per line
+        SpinnerUniversityAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         // University!
-        mUniversitySpinner.setAdapter(SpinnerAdapter);
+        mUniversitySpinner.setAdapter(SpinnerUniversityAdapter);
 
         mUniversitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -113,9 +129,9 @@ public class EditorActivity extends AppCompatActivity {
                 String selection = (String) parent.getItemAtPosition(position);
                 if (!TextUtils.isEmpty(selection)) {
                     if (selection.equals(getString(R.string.university_buaa))) {
-                        mUniversity = 1;
+                        mUniversity = bookContract.BookEntry.University_1;
                     } else {
-                        mUniversity = 0;
+                        mUniversity = bookContract.BookEntry.University_UNKNOW;
                     }
                 }
             }
@@ -124,6 +140,38 @@ public class EditorActivity extends AppCompatActivity {
                 mUniversity = 0; // Unknown
             }
         });
+    }
+
+    private void insertBook(){
+        String nameString = mNameEditText.getText().toString().trim();
+        String authorString = mAthorEditText.getText().toString().trim();
+        String publisherString = mPublisherEditText.getText().toString().trim();
+        String priceString = mPriceEditText.getText().toString().trim();
+        float price = Float.parseFloat(priceString);
+        String contactString = mContactEditText.getText().toString().trim();
+        String descriptionString = mDescriptionEditText.getText().toString().trim();
+
+        BookDbHelper mDbHelper = new BookDbHelper(this);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(bookContract.BookEntry.COLUMN_BOOK_NAME, nameString);
+        values.put(bookContract.BookEntry.COLUMN_BOOK_AUTHOR, authorString);
+        values.put(bookContract.BookEntry.COLUMN_BOOK_PUBLISHER, publisherString);
+        values.put(bookContract.BookEntry.COLUMN_BOOK_PRICE, price);
+        values.put(bookContract.BookEntry.COLUMN_CITY, mCity);
+        values.put(bookContract.BookEntry.COLUMN_UNIVERSITY, mUniversity);
+        values.put(bookContract.BookEntry.COLUMN_CONTACT, contactString);
+        values.put(bookContract.BookEntry.COLUMN_DESCRIPTION, descriptionString);
+        long newRowId = db.insert(bookContract.BookEntry.TABLE_NAME,null,values);
+
+        if(newRowId == -1){
+            Toast.makeText(this,"错误",Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this,"成功保存" + newRowId,Toast.LENGTH_SHORT).show();
+
+        }
+
+
     }
 
     @Override
@@ -140,7 +188,8 @@ public class EditorActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
-                // Do nothing for now
+                insertBook();
+                finish();
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
